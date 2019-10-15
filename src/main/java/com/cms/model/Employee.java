@@ -9,6 +9,7 @@ public class Employee {
 	private String role;
 	private String image;
 	private float balance;
+	boolean pass=false, r=false;
 	
 	public Employee() {
 		super();
@@ -137,5 +138,17 @@ public class Employee {
 	@Override
 	public String toString() {
 		return "Employee []";
+	}
+	public boolean isPass() {
+		return pass;
+	}
+	public void setPass(boolean pass) {
+		this.pass = pass;
+	}
+	public boolean isR() {
+		return r;
+	}
+	public void setR(boolean r) {
+		this.r = r;
 	}
 }

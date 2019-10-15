@@ -8,7 +8,7 @@ public class DAO {
 	Connection conn = null;
 	public Connection getConnection() {
 		
-		String dbURL = "jdbc:mysql://localhost:3306/sampledb?useSSL=false";
+		String dbURL = "jdbc:mysql://localhost:3306/cms?useSSL=false";
 		String username = "root";
 		String password = "Hexaware123";
 	
