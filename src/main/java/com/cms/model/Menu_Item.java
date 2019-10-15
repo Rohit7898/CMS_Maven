@@ -1,6 +1,7 @@
 package com.cms.model;
 
 public class Menu_Item {
+	private int n;
 	private int itemId;
 	private String itemName;
 	private float itemPrice;
@@ -79,16 +80,24 @@ public class Menu_Item {
 	public String toString() {
 		return "Menu_Item []";
 	}
-	public Menu_Item(int itemId, String itemName, float itemPrice, String itemImage, int vendorId) {
+	
+	public Menu_Item() {
 		super();
+	}
+	public int getN() {
+		return n;
+	}
+	public void setN(int n) {
+		this.n = n;
+	}
+	public Menu_Item(int n, int itemId, String itemName, float itemPrice, String itemImage, int vendorId) {
+		super();
+		this.n = n;
 		this.itemId = itemId;
 		this.itemName = itemName;
 		this.itemPrice = itemPrice;
 		this.itemImage = itemImage;
 		this.vendorId = vendorId;
-	}
-	public Menu_Item() {
-		super();
 	}
 	
 }

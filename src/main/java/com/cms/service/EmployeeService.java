@@ -13,7 +13,7 @@ public class EmployeeService {
 	
 
 	 public DbConnection db = new DbConnection();
-	 
+	 HashMap<String, String> conditions=new HashMap<String, String>();   
 	 public boolean loginEmp(int name, String pass, String role)
 	 {
 		 Employee e= new Employee();
@@ -108,5 +108,11 @@ public class EmployeeService {
 			else
 				return "Not addedd";
 		}
+	}
+	
+	public void showMenu() {
+		String[] fields= {"item_id","item_name","item_price","item_image","Vendor_id"};
+		
+		db.select("menu_item",fields,conditions);
 	}
 }

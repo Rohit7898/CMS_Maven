@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.cms.model.Employee;
+import com.cms.model.Menu_Item;
 import com.cms.service.EmployeeService;
 
 import java.sql.Date;
@@ -18,6 +19,7 @@ public class DbConnection {
 	static DAO dao;
 	static Connection con;
 	public ArrayList<Employee> ae= new ArrayList<Employee>();
+	public ArrayList<Menu_Item> mi= new ArrayList<Menu_Item>();
 	public void select(String table, String[] fields, HashMap<String, String> condition){
 
         dao = new DAO();
@@ -39,11 +41,15 @@ public class DbConnection {
                 PreparedStatement statement = con.prepareStatement(sql);
                 ResultSet resultSet = statement.executeQuery();
                 ResultSetMetaData rsmd = resultSet.getMetaData();
+                int c=1;
                 int columnsNumber = rsmd.getColumnCount();
                 while (resultSet.next()){
                 	if(table.equals("menu_item"))
-                	{
-                		System.out.println("table printed");
+                	{   
+                		
+                		mi.add(new Menu_Item(c,resultSet.getInt(1), resultSet.getString(2), resultSet.getFloat(3), resultSet.getString(4), resultSet.getInt(5)));
+                		
+                		c++;
                 	}
                 	else
                 	{

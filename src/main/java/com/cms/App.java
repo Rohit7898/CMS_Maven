@@ -6,6 +6,7 @@ import java.util.Scanner;
 
 import com.cms.connection.DbConnection;
 import com.cms.model.Employee;
+import com.cms.model.Menu_Item;
 import com.cms.service.EmployeeService;
 
 /**
@@ -25,7 +26,7 @@ public class App
         int id=input.nextInt();
         System.out.println("Enter user password");
         String pass=input.next();
-		String[] fields= {"item_name","item_price"};
+		
 		HashMap<String, String> conditions=new HashMap<String, String>();   
 	        //while loop to display menu
        while(!selection.equals("x"))
@@ -67,10 +68,20 @@ public class App
                        
                        if(selection.equals("1"))
                        {
-                       	//call function from orderservice
-                       	db.select("menu_item",fields,conditions);
-                       	System.out.println("Select item to add to cart");
-                       	System.out.println("To select item enter item number");
+                       		//call function from orderservice
+                          	System.out.println("Select item to add to cart");
+                      		ef.showMenu();
+                      		for(Menu_Item m:ef.db.mi)
+                      		{
+                      			
+                      				System.out.println(m.getN()+": "+m.getItemName()+"  "+m.getItemPrice());
+                      			
+                      		}
+                      		System.out.println("To select item enter item number");
+//                      		int item=input.nextInt();
+//                      		String[] field= {"Order_id","item_id","user_id","quantity","date","time","token","Vendor_id","Tprice","Status","Msg"};
+//                      		String[] values= {100,ef.db.mi.get(index)}
+//                      		db.insert("order", field, values)
                        }
                        else if(selection.equals("2"))
                        {
@@ -222,13 +233,11 @@ public class App
                        //show the menu
                        System.out.println();
                        System.out.println("Please make your selection");
-                       System.out.println("1: Menu Item");
-                       System.out.println("2: Profile");
-                       System.out.println("3: Add Balance");
-                       System.out.println("4: Cart");
-                       System.out.println("5: Edit Order");
-                       System.out.println("6: Order History");
-                       System.out.println("7: LogOut");
+                       System.out.println("1: View Vendors Profile");
+                       System.out.println("2: Add Vendors");
+                       System.out.println("3: Delete Vendors");
+                       System.out.println("4: Edit Vendors");
+                       System.out.println("5: LogOut");
                        System.out.println("x: Finish the simulation");
                        
                        //get the input
@@ -265,16 +274,6 @@ public class App
                        {
                        	//call editorder function from orderservice
                            
-                       }
-                       else if(selection.equals("6"))
-                       {
-                       	//call showorder history from employeeservice
-                           
-                       }
-                       else if(selection.equals("7"))
-                       {
-                       	
-                           //call logout function
                        }
                        else if(selection.equals("x"))
                        {
