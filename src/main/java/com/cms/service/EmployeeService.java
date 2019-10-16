@@ -1,12 +1,17 @@
 package com.cms.service;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Scanner;
 
 import com.cms.App;
 import com.cms.connection.DbConnection;
 import com.cms.model.Employee;
+import com.cms.model.Menu_Item;
 import com.cms.model.Vendor;
 
 public class EmployeeService {
@@ -49,8 +54,8 @@ public class EmployeeService {
          }
                 
      }
-//	 public boolean loginVen(int name, String pass)
-//	 {
+	 public boolean loginVen(int name, String pass)
+	 {
 //		 Vendor v= new Vendor();
 //		 DbConnection db = new DbConnection();
 //		 String selection = "";
@@ -79,10 +84,10 @@ public class EmployeeService {
 //         }
 //         else
 //         {
-//        	 return false;
+       	 return false;
 //         }
 //                
-//     }
+    }
 	 
 	public String addBalance(float amount)
 	{
@@ -114,5 +119,31 @@ public class EmployeeService {
 		String[] fields= {"item_id","item_name","item_price","item_image","Vendor_id"};
 		
 		db.select("menu_item",fields,conditions);
+	}
+	public void addToCart(int item, int id) {
+		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+    	LocalDate localDate = LocalDate.now();
+    	Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        
+		for(Menu_Item m:db.mi)
+  		{
+  			
+  				if(m.getN()==item) 
+  				{
+  					String[] field= {"Order_id","item_id","user_id","quantity","date","time","token","Vendor_id","Tprice","Status","Msg"};
+              		String[] values= {"101",Integer.toString(m.getItemId()),Integer.toString(id),"1",dtf.format(localDate),
+              							sdf.format(cal.getTime()),"13",Integer.toString(m.getVendorId()),Float.toString(m.getItemPrice()),
+              							"0",""};
+              		db.insert("cms.order", field, values);
+  				}
+  			
+  		}
+	}
+	public void viewCart(int id)
+	{
+		String sql="Select Order_id, mi.item_name, quantity, date, Tprice, v.Vendor_Name, Status "
+				+ "from cms.order o, menu_item mi, vendor v where o.item_id=mi.item_id and o.Vendor_id=v.Vendor_id and Status='0'";
+		 db.select_query(sql);
 	}
 }

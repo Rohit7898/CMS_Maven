@@ -1,6 +1,10 @@
 package com.cms;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -70,18 +74,16 @@ public class App
                        {
                        		//call function from orderservice
                           	System.out.println("Select item to add to cart");
-                      		ef.showMenu();
+                          	ef.showMenu();
                       		for(Menu_Item m:ef.db.mi)
                       		{
-                      			
-                      				System.out.println(m.getN()+": "+m.getItemName()+"  "+m.getItemPrice());
-                      			
+                      			System.out.println(m.getN()+": "+m.getItemName()+"  "+m.getItemPrice());
                       		}
                       		System.out.println("To select item enter item number");
-//                      		int item=input.nextInt();
-//                      		String[] field= {"Order_id","item_id","user_id","quantity","date","time","token","Vendor_id","Tprice","Status","Msg"};
-//                      		String[] values= {100,ef.db.mi.get(index)}
-//                      		db.insert("order", field, values)
+                      		int item=input.nextInt();
+                      		ef.addToCart(item,id);
+                      		
+                      		
                        }
                        else if(selection.equals("2"))
                        {
@@ -105,6 +107,7 @@ public class App
                        {
                        	
                            //call addtocart function in employeeservice
+                    	   ef.viewCart(id);
                        }
                        else if(selection.equals("5"))
                        {
