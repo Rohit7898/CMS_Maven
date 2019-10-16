@@ -11,6 +11,7 @@ import java.util.Scanner;
 import com.cms.connection.DbConnection;
 import com.cms.model.Employee;
 import com.cms.model.Menu_Item;
+import com.cms.model.Order;
 import com.cms.service.EmployeeService;
 
 /**
@@ -26,17 +27,13 @@ public class App
         Employee e = new Employee();
         Scanner input=new Scanner(System.in);
 		String selection = "";
-		System.out.println("Enter user Id");
-        int id=input.nextInt();
-        System.out.println("Enter user password");
-        String pass=input.next();
 		
 		HashMap<String, String> conditions=new HashMap<String, String>();   
 	        //while loop to display menu
        while(!selection.equals("x"))
        {
            //show the menu
-           System.out.println();
+    	   System.out.println();
            System.out.println("Please make your selection");
            System.out.println("1: Login as Employee");
            System.out.println("2: Login as Vendor");
@@ -44,14 +41,20 @@ public class App
            System.out.println("x: Finish the simulation");
            
            //get the input
-           selection = input.nextLine();
            System.out.println();
+           selection = input.next();
            
            if(selection.equals("1"))
            {
+        	   System.out.println("Enter user Id");
+               int id=input.nextInt();
+               System.out.println("Enter user password");
+               String pass=input.next();
            	   boolean login=ef.loginEmp(id,pass,"employee");
                if(login) 
                {
+            	   System.out.println("Hello "+ef.db.ae.get(0).getEmployeeName());
+            	   System.out.println("Welcome to Food Stop");
             	   while(!selection.equals("x"))
                    {
                        //show the menu
@@ -63,12 +66,12 @@ public class App
                        System.out.println("4: Cart");
                        System.out.println("5: Edit Order");
                        System.out.println("6: Order History");
-                       System.out.println("7: LogOut");
-                       System.out.println("x: Finish the simulation");
+                       System.out.println("x: LogOut");
                        
                        //get the input
-                       selection = input.nextLine();
                        System.out.println();
+
+                       selection = input.next();
                        
                        if(selection.equals("1"))
                        {
@@ -81,7 +84,15 @@ public class App
                       		}
                       		System.out.println("To select item enter item number");
                       		int item=input.nextInt();
-                      		ef.addToCart(item,id);
+                      		if(ef.addToCart(item,id,ef.db.ae.get(0).getBalance()))
+                      		{
+                      			System.out.println("Added to the cart");
+                      		}
+                      		else
+                      		{
+                      			System.out.println("Insufficient Balance");
+                      			;
+                      		}
                       		
                       		
                        }
@@ -93,7 +104,7 @@ public class App
                     		System.out.println("Contact : "+ef.db.ae.get(0).getEmployeeContact());
                     		System.out.println("Image : "+ef.db.ae.get(0).getImage());
                     		System.out.println("Balance : "+ef.db.ae.get(0).getBalance());
-                           
+                           ;
                        }
                        else if(selection.equals("3"))
                        {
@@ -111,7 +122,47 @@ public class App
                        }
                        else if(selection.equals("5"))
                        {
-                       	//call editorder function from orderservice
+                       	ef.showOrder(id);
+                       	System.out.println("Enter order number that you want to edit or delete or enter 0 to go back");
+                       	int order=input.nextInt();
+                       	for(Order o:ef.db.ot)
+                       	{
+                       		if(o.getOrderId()==order)
+                       		{
+                       			System.out.println("Order ID: "+o.getOrderId()+" Item: "+o.getItemId()+" quantity:"+o.getQuantity());
+                       			System.out.println("Make your selection for edit or delete");
+                               	while(!selection.equals("x"))
+                               	{
+                               		System.out.println("1: Edit");
+                                   	System.out.println("2: Delete");
+                                   	System.out.println("x: Go Back");
+                                   	selection=input.next();
+                                   	if(selection.equals("1"))
+                                   	{
+                                   		System.out.println("Enter quantity");
+                                   		int q=input.nextInt();
+                                   		if(ef.editOrder(order,q, o.getTotalPrice()))
+                                   		{
+                                   			System.out.println("Order Updated");
+                                   		}
+                                   		else
+                                   		{
+                                   			System.out.println("Failed to update order");
+                                   		}
+                                   	}
+                                   	else if(selection.equals("2"))
+                                   	{
+                                   		
+                                   	}
+                                   	else if(selection.equals("x"))
+                                   	{
+                                   		;
+                                   	}
+                               	}
+                       		}
+                       	}
+                       	
+                       	
                            
                        }
                        else if(selection.equals("6"))
@@ -119,15 +170,10 @@ public class App
                        	//call showorder history from employeeservice
                            
                        }
-                       else if(selection.equals("7"))
-                       {
-                       	
-                           //call logout function
-                       }
                        else if(selection.equals("x"))
                        {
                            //go out
-                           ;
+                           System.exit(0);
                        }
                    }
                }
@@ -228,6 +274,10 @@ public class App
 //           }
            else if(selection.equals("3"))
            {
+        	   System.out.println("Enter user Id");
+               int id=input.nextInt();
+               System.out.println("Enter user password");
+               String pass=input.next();
         	   boolean login=ef.loginEmp(id,pass,"admin");
                if(login) 
                {
@@ -302,7 +352,8 @@ public class App
            else if(selection.equals("x"))
            {
                //go out
-               ;
+               System.exit(0);
+
            }
        }
     }

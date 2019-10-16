@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.cms.model.Employee;
 import com.cms.model.Menu_Item;
+import com.cms.model.Order;
 import com.cms.service.EmployeeService;
 
 import java.sql.Date;
@@ -20,6 +21,7 @@ public class DbConnection {
 	static Connection con;
 	public ArrayList<Employee> ae= new ArrayList<Employee>();
 	public ArrayList<Menu_Item> mi= new ArrayList<Menu_Item>();
+	public ArrayList<Order> ot= new ArrayList<Order>();
 	public void select(String table, String[] fields, HashMap<String, String> condition){
 
         dao = new DAO();
@@ -50,6 +52,17 @@ public class DbConnection {
                 		mi.add(new Menu_Item(c,resultSet.getInt(1), resultSet.getString(2), resultSet.getFloat(3), resultSet.getString(4), resultSet.getInt(5)));
                 		
                 		c++;
+                	}
+                	else if(table.equals("cms.order"))
+                	{
+                		ot.add(new Order(resultSet.getInt(1), resultSet.getInt(2), resultSet.getInt(3), resultSet.getInt(4), resultSet.getDate(5), resultSet.getTime(6),
+                				resultSet.getInt(7), resultSet.getInt(8), resultSet.getFloat(9), resultSet.getInt(10),resultSet.getString(11)));
+                		for (int i = 1; i <= columnsNumber; i++) {
+                            if (i > 1) System.out.print(",  ");
+                            String columnValue = resultSet.getString(i);
+                            System.out.print(rsmd.getColumnName(i) + "-->" +columnValue );
+                        }
+                        System.out.println("");
                 	}
                 	else
                 	{
