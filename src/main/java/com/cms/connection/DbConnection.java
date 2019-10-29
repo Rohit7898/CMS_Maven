@@ -39,6 +39,7 @@ public class DbConnection {
             sql = sql.substring(0, sql.length()-4);
         }
         try{
+        	
             if (!con.isClosed() || con!=null){
                 PreparedStatement statement = con.prepareStatement(sql);
                 ResultSet resultSet = statement.executeQuery();
@@ -52,6 +53,7 @@ public class DbConnection {
                 		mi.add(new Menu_Item(c,resultSet.getInt(1), resultSet.getString(2), resultSet.getFloat(3), resultSet.getString(4), resultSet.getInt(5)));
                 		
                 		c++;
+                		 
                 	}
                 	else if(table.equals("cms.order"))
                 	{
@@ -195,31 +197,32 @@ public class DbConnection {
         }
 
     }
-	public void loginEmp(int name) {
+	public boolean loginEmp(String m_username,String  m_password) {
 		try {
 			dao = new DAO();
 			con = dao.getConnection();
 			EmployeeService es= new EmployeeService();
-			String sql = "select * from employee where user_id='"+name+"'";
+			String sql = "select * from employee where User_id='"+m_username+"' and User_password='"+m_password+"'";
 			PreparedStatement statement = con.prepareStatement(sql);
 			ResultSet r=statement.executeQuery();
-			if(r.next())
+			
+				if(r.next()) {
+					if(r.getString("User_password").equals(m_password)) {
+						return true;
+					}
+				}
+				else
+				{
+					return false;
+				}
+				return false;
+			}
+		catch (SQLException e)
 			{
-				
-				ae.add(new Employee(r.getInt(1),r.getString(2),r.getString(3),r.getString(4),r.getString(5),r.getString(6),r.getString(7),r.getFloat(8)));
-				System.out.println(ae.get(0).getEmployeeId());
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
 			}
-			else {
-				
-			}
-				
-			}
-			catch(Exception e) {
-				System.out.println(e);
-			}	
+		}
 	}
-	
-	
-	
 
-}
